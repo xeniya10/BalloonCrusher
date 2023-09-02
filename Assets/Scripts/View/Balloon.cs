@@ -41,7 +41,7 @@ public class Balloon : MonoBehaviour, IPointerClickHandler
 
     private void Move()
     {
-        _moveAnimation = transform.DOLocalMoveY(_maxVerticalPosition,_velocity).SetEase(Ease.Linear);
+        _moveAnimation = transform.DOLocalMoveY(_maxVerticalPosition,_velocity, true).SetEase(Ease.Linear);
         _moveAnimation.onComplete += Reset;
         _moveAnimation.onComplete += onCompletedMove.Invoke;
     }
