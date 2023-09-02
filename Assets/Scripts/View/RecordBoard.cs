@@ -10,17 +10,16 @@ public class RecordBoard : MonoBehaviour
 {
     [SerializeField] private RecordView _recordView = default;
     [SerializeField] private Transform _recordListParent = default;
-    
+
     private List<RecordView> _records = new List<RecordView>();
     private RecordRepository _recordRepository = null;
     
     [Inject] public void Inject(RecordRepository recordRepository) => _recordRepository = recordRepository;
 
-    public void SetActive(bool isActivated) => gameObject.SetActive(isActivated);
-
     private void OnEnable()
     {
         List<Record> records = _recordRepository.GetRecords();
+
         CreateRecordList(records);
         
         for (int i = 0; i < records.Count; i++)

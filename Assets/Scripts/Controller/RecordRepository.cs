@@ -1,3 +1,5 @@
+using System;
+
 namespace BalloonCrusher.Controller
 {
 using Model;
@@ -9,8 +11,8 @@ using System.Linq;
 
 public class RecordRepository
 {
-    private const string FILE_NAME = "records";
-    private const string FILE_EXTENSION = ".balloonCrusher";
+    private const string FILE_NAME = "/Records";
+    private const string FILE_EXTENSION = ".json";
     private string _filePath = "";
     
     private List<Record> _records = new List<Record>();
@@ -19,9 +21,9 @@ public class RecordRepository
     {
         if (string.IsNullOrEmpty(_filePath))
         {
-            _filePath = Application.companyName + FILE_NAME + FILE_EXTENSION;
+            _filePath = Application.persistentDataPath + FILE_NAME + FILE_EXTENSION;
         }
-
+        
         return _filePath;
     }
 
@@ -51,12 +53,12 @@ public class RecordRepository
         }
 
         string json = JsonConvert.SerializeObject(_records.OrderByDescending(record => record.Score), Formatting.Indented);
-
-        if (!File.Exists(GetFilePath()))
+        
+        if (File.Exists(GetFilePath()))
         {
-            File.Create(GetFilePath());
+            File.Delete(GetFilePath());
         }
-
+        
         File.WriteAllText(GetFilePath(), json);
     }
 
@@ -69,6 +71,7 @@ public class RecordRepository
 
         string json = File.ReadAllText(GetFilePath());
         _records = JsonConvert.DeserializeObject<List<Record>>(json);
+        _records.OrderByDescending(record => record.Score);
     }
 }
 }

@@ -28,7 +28,6 @@ public class GameplayController : IInitializable
         if (!_balloonSpawner.GetInitStatus())
         {
             Reset();
-            
             _balloonSpawner.Initialize();
             _balloonSpawner.onBurstedBalloon += AddPoints;
             _balloonSpawner.onMissedBalloon += OnMissedBalloon;
@@ -40,10 +39,10 @@ public class GameplayController : IInitializable
         _currentLifeNumber++;
         _lifeView.InactivateLife();
 
-        if (_currentLifeNumber >= _totalLifeNumber)
+        if (_currentLifeNumber == _totalLifeNumber)
         {
             _recordRepository.Write(new Record(DateTime.Now.ToString(), _score.GetScore()));
-            _recordBoard.SetActive(true);
+            _recordBoard.gameObject.SetActive(true);
             _balloonSpawner.Reset();
         }
     }
@@ -61,8 +60,7 @@ public class GameplayController : IInitializable
         _score.ResetScore();
         _scoreView.Reset();
         _lifeView.Reset();
-        _balloonSpawner.Reset();
-        
+
         _balloonSpawner.onBurstedBalloon -= AddPoints;
         _balloonSpawner.onMissedBalloon -= OnMissedBalloon;
     }
